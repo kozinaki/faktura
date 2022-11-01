@@ -1,9 +1,17 @@
 pipeline {
-    agent { dockerfile true }
+    agent {
+        // Equivalent to "docker build -f Dockerfile -t faktura:latest .
+        dockerfile {
+            filename 'Dockerfile'
+            dir '.'
+            label ''
+            additionalBuildArgs '-t faktura:latest'
+            args ''
+        }
+    }
     stages {
-        stage('Build') { 
+        stage('Deploy') {
             steps {
-                sh 'docker build -t faktura:latest .'
                 sh 'docker run --rm --name faktura.exe -p 8080:8080 faktura:latest'
             }
         }

@@ -10,4 +10,6 @@ COPY . ./
 
 CMD ["run.sh"]
 
+CMD ["./gradlew", "build"]
+
 ENTRYPOINT [ "./gradlew", "bootRun" ]
