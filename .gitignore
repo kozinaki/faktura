@@ -1,0 +1,5 @@
+.idea/
+.gradle/
+build/
+frontend/node_modules
+src/main/resources/static/built/bundle.js
