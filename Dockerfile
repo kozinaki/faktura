@@ -8,10 +8,8 @@ WORKDIR renderapi
 
 COPY . ./
 
-CMD ["run.sh"]
-
-CMD ["./gradlew build"]
-
-CMD ["./gradlew bootJar"]
+RUN run.sh
+RUN ./gradlew build
+RUN ./gradlew bootJar
 
 ENTRYPOINT [ "java", "-jar", "build/libs/faktura-0.1.jar" ]
