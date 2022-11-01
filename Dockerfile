@@ -8,7 +8,7 @@ WORKDIR renderapi
 
 COPY . ./
 
-RUN run.sh
+CMD ["run.sh"]
 RUN ./gradlew build
 RUN ./gradlew bootJar
 
