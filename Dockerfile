@@ -1,4 +1,4 @@
-FROM debian:11
+FROM bellsoft/liberica-openjdk-debian:17
 
 RUN apt update
 
