@@ -1,13 +1,9 @@
 pipeline {
-    agent {
-        docker {
-            image 'bellsoft/liberica-openjdk-debian:17'
-        }
-    }
+    agent { dockerfile true }
     stages {
         stage('Build') { 
             steps {
-                sh './run.sh && ./gradlew bootJar' 
+                sh 'docker build -t faktura:latest .'
             }
         }
     }
