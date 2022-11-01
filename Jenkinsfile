@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'docker pull bellsoft/liberica-openjdk-debian:17'
+            image 'bellsoft/liberica-openjdk-debian:17'
         }
     }
     stages {
