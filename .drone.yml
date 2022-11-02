@@ -7,6 +7,10 @@ platform:
   arch: amd64
 
 steps:
+  - name: pre-build
+    commands:
+      - docker container faktura.exe stop
+      - docker rmi faktura:latest
   - name: build
     commands:
       - docker build -t faktura:latest .
