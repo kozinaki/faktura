@@ -21,5 +21,6 @@ steps:
 trigger:
   branch:
     - main
-  event:
-    - tag
+  exclude:
+    event:
+      - pull_request
