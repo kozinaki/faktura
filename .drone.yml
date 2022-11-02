@@ -11,9 +11,11 @@ steps:
     commands:
       - docker container stop faktura.exe || true
       - docker rmi faktura:latest || true
+      - echo 'Pre-build complete'
   - name: build
     commands:
       - docker build -t faktura:latest .
+      - echo 'Build complete'
   - name: deploy
     commands:
       - docker run -d --rm --name faktura.exe -p 8080:8080 faktura:latest
