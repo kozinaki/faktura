@@ -9,7 +9,7 @@ platform:
 steps:
   - name: pre-build
     commands:
-      - docker container faktura.exe stop
+      - docker container stop faktura.exe
       - docker rmi faktura:latest
   - name: build
     commands:
