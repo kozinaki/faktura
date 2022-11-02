@@ -17,6 +17,7 @@ steps:
   - name: deploy
     commands:
       - docker run -d --rm --name faktura.exe -p 8080:8080 faktura:latest
+      - echo 'Deployment complete'
 
 trigger:
   branch:
