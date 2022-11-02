@@ -1,0 +1,23 @@
+kind: pipeline
+type: exec
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: pre-build
+    commands:
+      - docker container stop faktura.exe || true
+      - docker rmi faktura:latest || true
+  - name: build
+    commands:
+      - docker build -t faktura:latest .
+  - name: deploy
+    commands:
+      - docker run -d --rm --name faktura.exe -p 8080:8080 faktura:latest
+
+trigger:
+  branch:
+    - main
