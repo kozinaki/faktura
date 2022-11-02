@@ -11,6 +11,7 @@ steps:
     commands:
       - docker container stop faktura.exe || true
       - docker rmi faktura:latest || true
+      - echo 'Complete pre-build'
   - name: build
     commands:
       - docker build -t faktura:latest .
