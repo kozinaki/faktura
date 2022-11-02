@@ -1,4 +1,5 @@
 # faktura
+[![Build Status](http://kozinaki.net/api/badges/kozinaki/faktura/status.svg)](http://kozinaki.net/kozinaki/faktura)
 
 App for accounting orders and customers
 
