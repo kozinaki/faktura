@@ -75,3 +75,9 @@ td, th {
     padding: 0.5rem;
     text-align: left;
 }
+
+#two_buttons {
+    float:left;
+    border: none;
+    vertical-align: middle;
+}

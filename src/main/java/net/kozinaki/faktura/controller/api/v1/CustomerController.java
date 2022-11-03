@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.jsonSchema.customProperties.HyperSchemaFacto
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import java.util.List;
+import net.kozinaki.faktura.domain.entities.Customer;
 import net.kozinaki.faktura.domain.pojo.CustomerDto;
 import net.kozinaki.faktura.domain.pojo.CustomerIdDto;
 import net.kozinaki.faktura.service.CustomerService;
@@ -42,6 +43,12 @@ public class CustomerController {
   public ResponseEntity<CustomerIdDto> deleteCustomer(@RequestBody CustomerIdDto customerIdDto) {
     Long id = customerService.deleteCustomer(customerIdDto);
     return new ResponseEntity<>(new CustomerIdDto(id), HttpStatus.OK);
+  }
+
+  @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<CustomerIdDto> updateCustomer(@RequestBody CustomerDto customerDto) {
+    int result = customerService.updateCustomer(customerDto);
+    return new ResponseEntity<>(new CustomerIdDto(customerDto.id), HttpStatus.OK);
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/schema", produces = MediaType.APPLICATION_JSON_VALUE)
