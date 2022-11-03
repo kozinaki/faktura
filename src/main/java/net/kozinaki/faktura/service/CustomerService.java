@@ -30,8 +30,21 @@ public class CustomerService {
   }
 
   @Transactional
+  public int updateCustomer(CustomerDto customerDto) {
+    return customerRepository.updateByCustomerId(
+        customerDto.name,
+        customerDto.phone,
+        customerDto.address,
+        customerDto.email,
+        customerDto.inn,
+        customerDto.description,
+        customerDto.id
+    );
+  }
+
+  @Transactional
   public Long deleteCustomer(CustomerIdDto customerIdDto) {
-    customerRepository.setDeleteByCustomerId(LocalDateTime.now(), customerIdDto.id);
+    int result = customerRepository.setDeleteByCustomerId(LocalDateTime.now(), customerIdDto.id);
     return customerIdDto.id;
   }
 

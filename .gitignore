@@ -2,4 +2,5 @@
 .gradle/
 build/
 frontend/node_modules
+frontend/src/main/resources/static/built/*
 src/main/resources/static/built/bundle.js
