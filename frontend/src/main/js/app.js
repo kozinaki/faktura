@@ -139,7 +139,24 @@ class CreateDialog extends React.Component {
 						<h2>Create new customer</h2>
 
 						<form onSubmit={this.handleSubmit}>
-							{inputs}
+							<p key="name">
+                <input type="text" placeholder="name" ref="name" className="field" required/>
+              </p>
+              <p key="phone">
+                <input type="text" placeholder="phone" ref="phone" className="field" required/>
+              </p>
+              <p key="address">
+                <textarea name="address" placeholder="address" ref="address" cols="10" rows="1" required></textarea>
+              </p>
+              <p key="email">
+                <input type="text" placeholder="email" ref="email" className="field" required/>
+              </p>
+              <p key="inn">
+                <input type="text" placeholder="inn" ref="inn" className="field"/>
+              </p>
+              <p key="description">
+                <textarea name="description" placeholder="description" ref="description" cols="10" rows="1"></textarea>
+              </p>
 							<input type="submit" value="Create"/>
 						</form>
 					</div>
@@ -188,7 +205,24 @@ class UpdateDialog extends React.Component {
 						<h2>Update an customer</h2>
 
 						<form>
-							{inputs}
+							<p key="name">
+                <input type="text" defaultValue={this.props.customer['name']} placeholder="name" ref="name" className="field" required/>
+              </p>
+              <p key="phone">
+                <input type="text" defaultValue={this.props.customer['phone']} placeholder="phone" ref="phone" className="field" required/>
+              </p>
+              <p key="address">
+                <textarea name="address" defaultValue={this.props.customer['address']} placeholder="address" ref="address" cols="10" rows="1" required></textarea>
+              </p>
+              <p key="email">
+                <input type="text" defaultValue={this.props.customer['email']} placeholder="email" ref="email" className="field" required/>
+              </p>
+              <p key="inn">
+                <input type="text" defaultValue={this.props.customer['inn']} placeholder="inn" ref="inn" className="field"/>
+              </p>
+              <p key="description">
+                <textarea name="description" defaultValue={this.props.customer['description']} placeholder="description" ref="description" cols="10" rows="1"></textarea>
+              </p>
 							<button onClick={this.handleSubmit}>Update</button>
 						</form>
 					</div>
