@@ -1,299 +1,70 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const client = require('./client');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {CustomerApp} from './customers/customer'
+import {OrderApp} from './orders/order'
+import {PaymentApp} from './payments/payment'
+import {
+	BrowserRouter as Router,
+	Route,
+	Routes,
+	Link
+} from "react-router-dom";
 
-class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {customers: []};
-		this.onCreate = this.onCreate.bind(this);
-		this.onDelete = this.onDelete.bind(this);
-		this.onUpdate = this.onUpdate.bind(this);
-	}
+// class App extends React.Component {
+// 	render() {
+// 		return (
+// 			<div className="app">
+// 				<Routes> 
+// 					<HomeLayoutRoute path="/" element={<Home />} />
+// 					<PrivateRoute path="/" element={<PrivateScreen/>} />
+// 					<Route path="customers" element={<CustomerApp />} />
+// 					<Route path="orders" element={<OrderApp />} />
+// 					<Route path="payments" element={<PaymentApp />} />
+// 				</Routes>
+// 			</div>
+// 		);
+// 	}
+// }
 
-	onCreate(newCustomer) {
-		client({method: 'POST', path: '/api/v1/customers', entity: newCustomer, headers: {'Content-Type': 'application/json'}})
-		.then(response => {
-			newCustomer['id'] = response.entity.id;
-			const customers = this.state.customers;
-			customers.push(newCustomer);
-			this.setState({
-				customers: customers,
-				attributes: this.state.attributes
-			});
-		})
-	}
-
-	onDelete(deleteCustomer) {
-		customerId = {};
-		customerId['id'] = deleteCustomer.id;
-		client({method: 'DELETE', path: '/api/v1/customers', entity: customerId, headers: {'Content-Type': 'application/json'}})
-		.then(response => {
-			const customers = this.state.customers.filter(customer => customer.id != deleteCustomer.id);
-			this.setState({
-				customers: customers,
-				attributes: this.state.attributes
-			});
-		});
-	}
-
-	onUpdate(customer, updatedCustomer) {
-		client({
-			method: 'PUT',
-			path: '/api/v1/customers',
-			entity: updatedCustomer,
-			headers: {'Content-Type': 'application/json'}
-		}).then(response => {
-			const customers = this.state.customers;
-
-			const index_of_customer = customers.indexOf(customer);
-			if (index_of_customer != -1) {
-				customers[index_of_customer] = updatedCustomer;
-			}
-			this.setState({
-				customers: customers,
-				attributes: this.state.attributes
-			});
-			if (response.status.code === 412) {
-				alert('DENIED: Unable to update ' + customer + '. Your copy is stale.');
-			}
-		});
-	}
-
-	componentDidMount() {
-		client({method: 'GET', path: '/api/v1/customers', headers: {'Accept': 'application/json'}})
-		.then(response => {
-			this.customers = response.entity;
-			return client({method: 'GET', path: '/api/v1/customers/schema', headers: {'Accept': 'application/json'}});
-		}).then(response => {
-			const properties = response.entity.properties.filter(property => property != 'id');
-			this.setState({
-				customers: this.customers,
-				attributes: properties
-			});
-		})
-	}
-
+class HomeApp extends React.Component {
 	render() {
 		return (
-		  	<div>
-		    	<CreateDialog 
-					attributes={this.state.attributes} 
-					onCreate={this.onCreate} />
-				<CustomerList 
-					customers={this.state.customers}
-					attributes={this.state.attributes}
-					onDelete={this.onDelete}
-					onUpdate={this.onUpdate} />
-			</div>
+			<div className="welcome">Welcome to faktura</div>
 		)
 	}
 }
 
-class CreateDialog extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
-
-	handleSubmit(e) {
-		e.preventDefault();
-		const newCustomer = {};
-		this.props.attributes.forEach(attribute => {
-			newCustomer[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
-		});
-		this.props.onCreate(newCustomer);
-
-		// clear out the dialog's inputs
-		this.props.attributes.forEach(attribute => {
-			ReactDOM.findDOMNode(this.refs[attribute]).value = '';
-		});
-
-		// Navigate away from the dialog to hide it.
-		window.location = "#";
-	}
-
-	render() {
-		const inputs = this.props.attributes?.map(attribute => {
-			if (attribute == 'description' || attribute == 'address') {
-				return <p key={attribute}>
-					<textarea name={attribute} placeholder={attribute} ref={attribute} cols="10" rows="1" required></textarea>
-				</p>
-			} else {
-				return <p key={attribute}>
-						<input type="text" placeholder={attribute} ref={attribute} className="field" required/>
-					</p>
-			}
-		});
-
-		return (
+export default function App() {
+	return (
+		<Router>
 			<div>
-			  <h1>Customers</h1>
-				<a className="button" href="#createCustomer">Create customer</a>
-
-				<div id="createCustomer" className="modalDialog">
-					<div>
-						<a href="#" title="Close" className="close">X</a>
-
-						<h2>Create new customer</h2>
-
-						<form onSubmit={this.handleSubmit}>
-							<p key="name">
-                <input type="text" placeholder="name" ref="name" className="field" required/>
-              </p>
-              <p key="phone">
-                <input type="text" placeholder="phone" ref="phone" className="field" required/>
-              </p>
-              <p key="address">
-                <textarea name="address" placeholder="address" ref="address" cols="10" rows="1" required></textarea>
-              </p>
-              <p key="email">
-                <input type="text" placeholder="email" ref="email" className="field" required/>
-              </p>
-              <p key="inn">
-                <input type="text" placeholder="inn" ref="inn" className="field"/>
-              </p>
-              <p key="description">
-                <textarea name="description" placeholder="description" ref="description" cols="10" rows="1"></textarea>
-              </p>
-							<input type="submit" value="Create"/>
-						</form>
+				<div className="container">
+					<div className="row">
+						<div className="column">
+							<Link style={{fontSize: "36px"}} to="/">Home</Link>
+						</div>
+						<div className="column">
+							<Link style={{fontSize: "36px"}} to="/customers">Customers</Link>
+						</div>
+						<div className="column">
+							<Link style={{fontSize: "36px"}} to="/orders">Orders</Link>
+						</div>
+						<div className="column">
+							<Link style={{fontSize: "36px"}} to="/payments">Payments</Link>
+						</div>
 					</div>
 				</div>
+
+
+				<Routes>
+					<Route path="/" element={<HomeApp />} />
+					<Route path="customers" element={<CustomerApp />} />
+					<Route path="orders" element={<OrderApp />} />
+					<Route path="payments" element={<PaymentApp />} />
+				</Routes>
 			</div>
-		)
-	}
-}
+		</Router>
+	);
+  }
 
-class UpdateDialog extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
-
-	handleSubmit(e) {
-		e.preventDefault();
-		const updatedCustomer = {};
-		this.props.attributes.forEach(attribute => {
-			updatedCustomer[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
-		});
-		updatedCustomer['id'] = this.props.customer['id'];
-		this.props.onUpdate(this.props.customer, updatedCustomer);
-		window.location = "#";
-	}
-
-	render() {
-		const inputs = this.props.attributes.map(attribute =>
-			<p key={attribute + this.props.customer[attribute]}>
-				<input type="text" placeholder={attribute}
-					   defaultValue={this.props.customer[attribute]}
-					   ref={attribute} className="field"/>
-			</p>
-		);
-
-		const dialogId = "updateCustomer-" + this.props.customer['id'];
-
-		return (
-			<div id="two_buttons" key={this.props.customer['id']}>
-				<a className="button" href={"#" + dialogId}>Update</a>&emsp;
-				<div id={dialogId} className="modalDialog">
-					<div>
-						<a href="#" title="Close" className="close">X</a>
-
-						<h2>Update an customer</h2>
-
-						<form>
-							<p key="name">
-                <input type="text" defaultValue={this.props.customer['name']} placeholder="name" ref="name" className="field" required/>
-              </p>
-              <p key="phone">
-                <input type="text" defaultValue={this.props.customer['phone']} placeholder="phone" ref="phone" className="field" required/>
-              </p>
-              <p key="address">
-                <textarea name="address" defaultValue={this.props.customer['address']} placeholder="address" ref="address" cols="10" rows="1" required></textarea>
-              </p>
-              <p key="email">
-                <input type="text" defaultValue={this.props.customer['email']} placeholder="email" ref="email" className="field" required/>
-              </p>
-              <p key="inn">
-                <input type="text" defaultValue={this.props.customer['inn']} placeholder="inn" ref="inn" className="field"/>
-              </p>
-              <p key="description">
-                <textarea name="description" defaultValue={this.props.customer['description']} placeholder="description" ref="description" cols="10" rows="1"></textarea>
-              </p>
-							<button onClick={this.handleSubmit}>Update</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		)
-	}
-};
-
-class CustomerList extends React.Component{
-	render() {
-		const customers = this.props.customers.map(customer =>
-			<Customer key={customer.id} 
-				customer={customer}
-				attributes={this.props.attributes}
-				onDelete={this.props.onDelete}
-				onUpdate={this.props.onUpdate}/>
-		);
-
-		return (
-			<table>
-				<tbody>
-					<tr>
-						<th>Name</th>
-						<th>Phone</th>
-						<th>Address</th>
-						<th>Email</th>
-            			<th>INN</th>
-						<th>Description</th>
-					</tr>
-					{customers}
-				</tbody>
-			</table>
-		)
-	}
-}
-
-class Customer extends React.Component{
-
-	constructor(props) {
-		super(props);
-		this.handleDelete = this.handleDelete.bind(this);
-	}
-
-	handleDelete() {
-		this.props.onDelete(this.props.customer);
-	}
-
-	render() {
-		return (
-			<tr>
-				<td>{this.props.customer.name}</td>
-				<td>{this.props.customer.phone}</td>
-				<td>{this.props.customer.address}</td>
-				<td>{this.props.customer.email}</td>
-				<td>{this.props.customer.inn}</td>
-				<td>{this.props.customer.description}</td>
-				<td>
-					<UpdateDialog customer={this.props.customer}
-									attributes={this.props.attributes}
-									onUpdate={this.props.onUpdate}/>
-					<div id="two_buttons">
-						<button onClick={this.handleDelete}>Delete</button>
-					</div>
-        		</td>
-			</tr>
-		)
-	}
-}
-
-ReactDOM.render(
-	<App />,
-	document.getElementById('react')
-)
+ReactDOM.render(<App />, document.getElementById('faktura'))
